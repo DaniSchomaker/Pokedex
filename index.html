@@ -4,23 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokedex</title>
-    <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.png">
-    
+    <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.png" />
+
     <script src="./scripts/database.js"></script>
     <script src="./scripts/templates.js"></script>
 
     <link rel="stylesheet" href="./styles/fonts.css" />
     <link rel="stylesheet" href="./styles/standard.css" />
-    <link rel="stylesheet" href="./styles/assets.css" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./styles/pokecard.css" />
+    <link rel="stylesheet" href="./style.css" />
   </head>
-  <body>
-<header></header>
+  <body onload="init()">
+    <header></header>
 
-<main>
-  <h1>Pokedex</h1>
-</main>
+    <main>
+      <h1>Pokedex</h1>
 
-<footer></footer>    
+      <div id="pokecard" class="pokecard"></div>
+    </main>
+
+    <footer></footer>
+
+    <script src="./script.js"></script>
   </body>
 </html>
