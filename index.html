@@ -11,31 +11,32 @@
 
     <link rel="stylesheet" href="./styles/fonts.css" />
     <link rel="stylesheet" href="./styles/standard.css" />
-    <link rel="stylesheet" href="./styles/pokecard.css" />
+    <link rel="stylesheet" href="./styles/pokemon-gallery.css" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body onload="init()">
     <header>
       <div class="content_container">
-        <!-- <div class=""> -->
-          <div class="header_logo">
-            <img src="./assets/icons/favicon.png" alt="Pokemon Logo" />
-            <span class="header_logo_title">Pokedex</span>
-          </div>
-          <input type="text" />
-        <!-- </div> -->
+        <div class="header_logo">
+          <img src="./assets/icons/favicon.png" alt="Pokemon Logo" />
+          <span class="header_logo_title">Pokedex</span>
+        </div>
+        <input type="text" /> <!-- Platzhalter für späteres Suchfeld -->
       </div>
     </header>
 
     <main>
       <div class="content_container">
-        <h1>Pokedex</h1>
-
-        <div id="pokecard" class="pokecard"></div>
+        <h1 tabindex="-1">Pokemons</h1>
+        <div id="pokemon_gallery" class="pokemon_gallery"></div>
       </div>
     </main>
 
-    <footer></footer>
+    <footer>
+      <div class="content_container">
+        <p>© 2025 – Dani Schomaker</p>
+      </div>
+    </footer>
 
     <script src="./script.js"></script>
   </body>

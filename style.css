@@ -1,14 +1,32 @@
 /***** General *****/
 
 :root {
-    --color_bg: rgb(5, 23, 31); 
-    --color_primary: rgb(8,33,41);
+  --color_bg: rgb(5, 23, 31); 
+  --color_primary: rgb(8,33,41);
+  --color_highlight: rgba(88, 151, 173, 1);
 }
 
 .content_container {
   max-width: 1440px;
   padding: 0;
   margin: 0 auto; /* damit der Content in der Mitte des Screens angezeigt wird und nicht linksbündig  */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  color: white;
+  background-color: var(--color_bg);
+}
+
+h1 {
+    text-align: center;
+    margin: 16px;
 }
 
 /***** Header *****/
@@ -18,7 +36,8 @@ header {
   align-items: center;
   height: 120px;
   background-color: var(--color_primary);
-  border-bottom: 2px solid var(--color_highlight);
+  border-bottom: 1px solid var(--color_highlight);
+  
 }
 
 header .content_container { /* Der .content_container wird nur für den header zur Flexbox */
@@ -48,6 +67,19 @@ header img {
 
 input {
   height: 24px;
+}
+
+/***** Footer *****/
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 60px;
+  background-color: var(--color_primary);
+  color: white;
+  border-top: 1px solid var(--color_highlight);
 }
 
 /***** Queries *****/
