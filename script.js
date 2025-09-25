@@ -1,43 +1,35 @@
-// let pokemonName = [];
+// Mit Blick auf die spätere Suchfunktion lege ich nur EIN Array an, 
+// in dem jedes Element (Objekt) ein komplettes Pokémon ist:
 
-let pokemonData = [];
+let pokemonDetails = [];
+
 
 function init() {
   renderPokemonGallery();
-  // renderPokemonImg();
 }
 
 async function renderPokemonGallery() {
-  let pokemonList = await fetch(
-    "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0"
-  ); // liefert ein OBJEKT
-  let pokemonListAsJson = await pokemonList.json();
+  // LISTE der Pokémon holen:
+  let listResponse = await fetch("https://pokeapi.co/api/v2/pokemon?limit=10&offset=0");
+  let pokemonList = await listResponse.json(); // in ein JSON umwandeln --> Den Variablenzusatz "AsJson" lasse ich weg, da das schon aus dem Code ersichtlich ist.
 
-  // console.log(responseAsJson);
+  // Für jedes Pokémon aus der LISTE: 
+  for (let i = 0; i < pokemonList.results.length; i++) {
+    let pokemonListItem = pokemonList.results[i]; // Eintrag aus der Liste speichern (Name + URL).
 
+    let detailResponse = await fetch(pokemonListItem.url); // Über die URL die Details dieses Pokemons abrufen.
+    let pokemonDetail = await detailResponse.json(); // in ein JSON umwandeln (s.o.)
 
-  for (let i = 0; i < pokemonListAsJson.results.length; i++) {
-    let pokemonDetails = await fetch (pokemonListAsJson.results[i].url);
-    let pokemonDetailsAsJson = await pokemonDetails.json();
+    pokemonDetails.push(pokemonDetail); // Die Detaildaten werden im globalen Array (jeweils als Objekt) gespeichert.
 
-    pokemonName.push(pokemonListAsJson.results[i].name);
+    // In HTML über Template (Übergabeparameter "pokemonDetail" (Singular!) einfügen:
     document.getElementById("pokemon_gallery").innerHTML +=
-      getPokemonGalleryTemplate(i);
+      getPokemonGalleryTemplate(pokemonDetail);
   }
-  console.log(pokemonName);
+
+  // Kontrolle: 
+  console.log(pokemonDetails);
 }
 
 
 
-
-// TIPP FREDDY:
-// async function showPokemon() {
-//   for (let index = 0; index < 20; index++) {
-//     let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + index); // #TODO: mehrere holen // liefert ein OBJEKT
-//     let responseAsJson = await response.json();
-
-//     // in Array pushen (global definieren)
-//   }
-
-//   console.log(responseAsJson.forms[0].name);
-// }
