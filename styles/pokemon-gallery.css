@@ -1,0 +1,33 @@
+.pokemon_gallery {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pokemon_card {
+  width: 200px;
+  background-color: var(--color_primary);
+  border-radius: 16px;
+  overflow: hidden; /* vermeidet, dass die "eckigen Kanten" zB des headers angezeigt werden */
+  margin: 24px;
+}
+
+.pokemon_card_header {
+    display: flex;
+    padding: 16px;
+}
+
+.pokemon_card_header h2 {
+    flex: 1; /* nimmt den ganzen Rest der Breite */
+    text-align: center;
+}
+
+.pokemon_img {
+  /* nur Platzhalter --> anpassen! */
+  height: 160px;
+  background-color: var(--color_highlight);
+}
+
+.pokemon_card_footer {
+  height: 60px;
+}
