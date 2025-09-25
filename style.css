@@ -1,0 +1,60 @@
+/***** General *****/
+
+:root {
+    --color_bg: rgb(5, 23, 31); 
+    --color_primary: rgb(8,33,41);
+}
+
+.content_container {
+  max-width: 1440px;
+  padding: 0;
+  margin: 0 auto; /* damit der Content in der Mitte des Screens angezeigt wird und nicht linksbündig  */
+}
+
+/***** Header *****/
+
+header {
+  display: flex;
+  align-items: center;
+  height: 120px;
+  background-color: var(--color_primary);
+  border-bottom: 2px solid var(--color_highlight);
+}
+
+header .content_container { /* Der .content_container wird nur für den header zur Flexbox */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  padding: 24px;
+}
+
+.header_logo {
+  display: flex;
+  align-items: center;
+  color: white;
+  gap: 16px;
+}
+
+header img {
+  height: 48px;
+  object-fit: contain;
+}
+
+.header_logo_title {
+  font-size: 30px;
+}
+
+input {
+  height: 24px;
+}
+
+/***** Queries *****/
+
+@media (max-width: 430px) {
+  header .content_container {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
