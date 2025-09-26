@@ -27,7 +27,8 @@ async function renderPokemonGallery() {
   // HTML für alle Karten
   let galleryHtml = ""; // ??? Soll ich das ganz nach oben schreiben?
   for (let i = 0; i < pokemonDetails.length; i++) {
-    galleryHtml += getPokemonCardTemplate(pokemonDetails[i]);
+    let typeName = pokemonDetails[i].types[0].type.name;
+    galleryHtml += getPokemonCardTemplate(pokemonDetails[i], typeName);
   }
 
   document.getElementById("pokemon_gallery").innerHTML = galleryHtml;

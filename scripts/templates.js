@@ -1,12 +1,12 @@
 function getTypeIconsTemplate(typeName) {
   return `
-    <span class="type_bg ${typeName}">
+    <span class="type_bg_icons ${typeName}">
       <img class="type_icon" src="./assets/icons/types/${typeName}.svg" alt="${typeName}">
     </span>
   `;
 }
 
-function getPokemonCardTemplate(pokemonDetail) {
+function getPokemonCardTemplate(pokemonDetail, typeName) {
   return `
     <article class="pokemon_card">
       <header class="pokemon_card_header">
@@ -14,7 +14,7 @@ function getPokemonCardTemplate(pokemonDetail) {
         <h2>${pokemonDetail.name}</h2>
       </header>
 
-      <section class="pokemon_img"> 
+      <section class="pokemon_img ${typeName}"> 
         <img src="${pokemonDetail.sprites.other.home.front_default}" alt="${pokemonDetail.name}">
       </section>
 
