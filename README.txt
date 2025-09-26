@@ -15,7 +15,7 @@ Die PokéAPI ist zweistufig aufgebaut:
        - 'name'        
        - 'sprites'   (Bilder)  
        - 'types'     (zB grass, poison)  
-       - 'stats'     (zB hp, attack, defense)  
+       - 'stats'     (zB hp [Lebenspunkte], attack, defense)  
 
 ## Code
 - Zuerst wird die Pokémon-Liste (mit Namen + URLs) abgerufen.  
