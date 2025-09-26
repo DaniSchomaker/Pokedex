@@ -1,11 +1,5 @@
 /***** General *****/
 
-:root {
-  --color_bg: rgb(5, 23, 31); 
-  --color_primary: rgb(8,33,41);
-  --color_highlight: rgba(88, 151, 173, 1);
-}
-
 .content_container {
   max-width: 1440px;
   padding: 0;
