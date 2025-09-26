@@ -23,9 +23,10 @@
 }
 
 .pokemon_img {
-  /* nur Platzhalter --> anpassen! */
-  height: 160px;
-  background-color: var(--color_highlight);
+  display: flex;
+  justify-content: center;
+  background-color: var(--color_highlight); /* !!! ToDo !!! */
+  padding-bottom: 20px;
 }
 
 .pokemon_img img {
@@ -34,5 +35,25 @@
 }
 
 .pokemon_card_footer {
-  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  
+}
+
+.type_bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.type_icon {
+  display: block; 
+  width: 16px;
+  height: 16px;
 }
