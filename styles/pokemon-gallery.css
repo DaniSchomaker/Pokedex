@@ -27,11 +27,13 @@
   justify-content: center;
   background-color: var(--color_highlight); /* !!! ToDo !!! */
   padding-bottom: 20px;
+  transition: box-shadow 0.3s ease;
 }
 
 .pokemon_img img {
   height: 120px;
   object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
 .pokemon_card_footer {
@@ -41,6 +43,14 @@
   gap: 16px;
   padding: 16px;
   
+}
+
+.pokemon_card:hover .pokemon_img {
+  box-shadow: 0 0 16px currentColor;
+}
+
+.pokemon_card:hover .pokemon_img img {
+  transform: scale(1.1);
 }
 
 .type_bg_icons {
@@ -56,4 +66,30 @@
   display: block; 
   width: 16px;
   height: 16px;
+}
+
+/***** Dialog/Lightbox *****/
+
+.lightbox {
+  width: 600px;
+  max-width: 95%; /* NICHT vw! damit es auf Smartphone funktioniert */
+  margin: auto; /* richtet die Lightbox mittig auf der Seite aus */
+  border: 3px solid white;
+  border-radius: 16px;
+  padding: 0;
+  color: white;
+  background-color: var(--color-bg-dark);
+}
+
+.lightbox::backdrop {  
+  background: rgba(0, 0, 0, 0.6); 
+}
+
+.header_lightbox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px; /* genug Höhe für mehrere Zeilen */
+  padding: 12px 24px;
+  gap: 16px;
 }
