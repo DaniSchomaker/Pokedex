@@ -21,7 +21,8 @@
           <img src="./assets/icons/favicon.png" alt="Pokemon Logo" />
           <span class="header_logo_title">Pokedex</span>
         </div>
-        <input type="text" /> <!-- Platzhalter für späteres Suchfeld -->
+        <input type="text" />
+        <!-- Platzhalter für späteres Suchfeld -->
       </div>
     </header>
 
@@ -30,12 +31,28 @@
         <h1 tabindex="-1">Pokemons</h1>
         <div id="pokemon_gallery" class="pokemon_gallery"></div>
       </div>
+
+      <dialog
+        id="lightbox"
+        class="lightbox"
+        onclick="closeLightbox()"
+        aria-labelledby="lightbox_title"
+      >
+        <div onclick="closeLightboxBubblingProtection(event)">
+          <!-- trennen oder zusammenfassen? -->
+          <header id="header_lightbox" class="header_lightbox"></header>
+          <section id="img_lightbox" class="img_lightbox"></section>
+          <footer id="footer_lightbox" class="footer_lightbox"></footer>
+        </div>
+      </dialog>
     </main>
 
     <footer class="website_footer">
       <div class="content_container">
-        <p>© 2025 Dani Schomaker | Credits: <a href="https://pokeapi.co/" target="_blank">PokéAPI</a> ❤️</p>
-
+        <p>
+          © 2025 Dani Schomaker | Credits:
+          <a href="https://pokeapi.co/" target="_blank">PokéAPI</a> ❤️
+        </p>
       </div>
     </footer>
 
