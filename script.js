@@ -2,6 +2,7 @@
 // in dem jedes Element (Objekt) ein komplettes Pokémon ist:
 
 let pokemonDetails = [];
+let lightboxRef = document.getElementById("lightbox");
 
 function init() {
   renderPokemonGallery();
@@ -44,3 +45,40 @@ function getTypeIcons(pokemonDetail) {
 
   return galleryHtml;
 }
+
+
+
+
+function openLightbox(i) {
+  currentPhotoIndex = i; // ToDo umbenennen
+  renderLightbox();
+  lightboxRef.showModal(); // .showModal = Dialog/Lightbox wird geöffnet
+}
+
+function renderLightbox() {
+  const headerLightbox = document.getElementById("header_lightbox");
+  const imgLightbox = document.getElementById("img_lightbox");
+  const footerLightbox = document.getElementById("footer_lightbox");
+
+  headerLightbox.innerHTML = getHeaderLightboxTemplate();
+  imgLightbox.innerHTML = getImgLightboxTemplate();
+  footerLightbox.innerHTML = getFooterLightboxTemplate();
+}
+
+function closeLightbox() {
+  lightboxRef.close();
+}
+
+function closeLightboxBubblingProtection(event) {
+  event.stopPropagation(); // bei den Event "click" wird der Bubbling-Effekt (also das Durchgreifen auf die unteren Ebenen) vermieden
+}
+
+
+
+
+///// Fokusshift /////
+
+// function setFocusOnTop() {
+//   const elementRef = document.getElementById("headline");
+//   elementRef.focus();
+// }
