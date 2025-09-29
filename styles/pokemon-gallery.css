@@ -36,13 +36,11 @@
   transition: transform 0.3s ease;
 }
 
-.pokemon_card_footer {
+.pokemon_type {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 16px;
   padding: 16px;
-  
 }
 
 .pokemon_card:hover .pokemon_img {
@@ -71,25 +69,58 @@
 /***** Dialog/Lightbox *****/
 
 .lightbox {
-  width: 600px;
-  max-width: 95%; /* NICHT vw! damit es auf Smartphone funktioniert */
-  margin: auto; /* richtet die Lightbox mittig auf der Seite aus */
-  border: 3px solid white;
+  width: 260px; 
+  max-width: 95%; 
+  margin: auto;  
+  /* richtet die Lightbox mittig auf der Seite aus */
+  border: none;
+  /* border: 3px solid white; */
   border-radius: 16px;
-  padding: 0;
+  
   color: white;
-  background-color: var(--color-bg-dark);
-}
+  background-color: var(--color_primary);
+  padding: 0;
+} 
 
 .lightbox::backdrop {  
   background: rgba(0, 0, 0, 0.6); 
 }
 
-.header_lightbox {
+.pokemon_lightbox {
+
+}
+
+/* .header_lightbox {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 80px; /* genug Höhe für mehrere Zeilen */
+  min-height: 80px; 
   padding: 12px 24px;
   gap: 16px;
+} */
+
+.pokemon_card {
+  width: 200px;
+  background-color: var(--color_primary);
+  border-radius: 16px;
+  overflow: hidden; /* vermeidet, dass die "eckigen Kanten" zB des headers angezeigt werden */
+  margin: 24px;
 }
+
+.button_close {
+  color: white;
+  border: 1px solid white;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.button_close:hover {
+  transform: scale(1.1);
+}
+
+.button_close:active {
+  transform: scale(0.9);
+}
+
+
+
