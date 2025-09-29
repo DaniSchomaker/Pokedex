@@ -47,42 +47,46 @@ function getPokemonLightboxTempl(pokemonDetail, typeName) {
         ${getTypeIcons(pokemonDetail)}
       </section>
 
-      <section>
-        <br> <br> Hier <br> kommt <br> was <br> anderes <br> hin
+      <section class="tabs">
+        <button id="button_main" class="tab_button active" onclick="showMain()">main</button>
+        <button id="button_stats" class="tab_button" onclick="showStats()">stats</button>
       </section>
+
+      <section id="tab_main" class="tab_main" style="display:block;">
+        <table class="pokemon_main_table">
+          <tr>
+            <td>Height:</td>
+            <td>${pokemonDetail.height / 10} m</td> 
+          </tr>
+          <tr>
+            <td>Weight:</td>
+            <td>${pokemonDetail.weight / 10} kg</td> 
+          </tr>
+          <tr>
+            <td>Base experience:</td>
+            <td>${pokemonDetail.base_experience}</td> 
+          </tr>
+          <tr>
+            <td>Abilities:</td>
+            <td>${getAbilities(pokemonDetail)}</td>
+          </tr>
+
+        </table>
+        
+      </section>
+
+      <section id="tab_stats" class="tab_stats" style="display:none;">
+        <p>Stats-Inhalt …</p>
+      </section>
+
+
+
     </article>  
   `;
 }
 
-// function getHeaderLightboxTempl(pokemonDetail) {
-//   return `
-//           <span>#${pokemonDetail.id}</span> 
-//           <h2>${pokemonDetail.name}</h2>
-    
-//     <button aria-label="Pokemon-Datailansicht schließen" onclick="closeLightbox()">
-//     x
-//     </button>`;
-// }
 
-
-// function getHeaderLightboxTempl() {
-//   return `
-//     <h2 id="lightbox_title">Test</h2>
-//     <button aria-label="Fotogroßansicht schließen" onclick="closeLightbox()">
-//     x
-//     </button>`;
-// }
-
-// function getImgLightboxTempl() {
-//   return `
-//     Hier <br> kommt <br> das <br> Bild <br> hin `;
-// }
-
-// function getFooterLightboxTempl(i) {
-//   return `
-//     Das ist der Footer
-//   `;
-// }
+// tab_button active // data-tab
 
 // , setFocusOnTop() --> in <button am Ende>
 

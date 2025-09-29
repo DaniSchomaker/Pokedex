@@ -47,11 +47,20 @@ function getTypeIcons(pokemonDetail) {
   return galleryHtml;
 }
 
+function getAbilities(pokemonDetail) {
+  let abilitiesHtml = "";
+  for (let i = 0; i < pokemonDetail.abilities.length; i++) {
+    if (i > 0) {
+      abilitiesHtml += `, <br>`;
+    }
+    abilitiesHtml += pokemonDetail.abilities[i].ability.name;
+  }
+  return abilitiesHtml;
+}
 
 
 
 function openLightbox(i) {
-  // currentPhotoIndex = i; // ToDo umbenennen // brauche ich das?
   const pokemonDetail = pokemonDetails[i]; // passendes Pokemon holen
   renderLightbox(pokemonDetail); // an den Renderer übergeben
   lightboxRef.showModal(); // .showModal = Dialog/Lightbox wird geöffnet
@@ -59,15 +68,8 @@ function openLightbox(i) {
 
 function renderLightbox(pokemonDetail) { //Übergabeparamter?
   const pokemonLightbox = document.getElementById("pokemon_lightbox");
-  // const headerLightbox = document.getElementById("header_lightbox");
-  // const imgLightbox = document.getElementById("img_lightbox");
-  // const footerLightbox = document.getElementById("footer_lightbox");
 
   pokemonLightbox.innerHTML = getPokemonLightboxTempl(pokemonDetail);
-
-  // headerLightbox.innerHTML = getHeaderLightboxTemplate(pokemonDetail);
-  // imgLightbox.innerHTML = getImgLightboxTemplate(pokemonDetail);
-  // footerLightbox.innerHTML = getFooterLightboxTemplate();
 }
 
 function closeLightbox() {
@@ -77,6 +79,35 @@ function closeLightbox() {
 function closeLightboxBubblingProtection(event) {
   event.stopPropagation(); // bei den Event "click" wird der Bubbling-Effekt (also das Durchgreifen auf die unteren Ebenen) vermieden
 }
+
+
+
+
+function showMain() {
+  // Tabs
+  document.getElementById("button_main").classList.add("active");
+  document.getElementById("button_stats").classList.remove("active");
+
+  // Inhalte
+  document.getElementById("tab_main").style.display = "block";
+  document.getElementById("tab_stats").style.display = "none";
+}
+
+function showStats() {
+  // Tabs
+  document.getElementById("button_main").classList.remove("active");
+  document.getElementById("button_stats").classList.add("active");
+
+  // Inhalte
+  document.getElementById("tab_main").style.display = "none";
+  document.getElementById("tab_stats").style.display = "block";
+}
+
+
+
+
+
+
 
 
 
