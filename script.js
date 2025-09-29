@@ -29,7 +29,8 @@ async function renderPokemonGallery() {
   let galleryHtml = ""; // ??? Soll ich das ganz nach oben schreiben?
   for (let i = 0; i < pokemonDetails.length; i++) {
     let typeName = pokemonDetails[i].types[0].type.name;
-    galleryHtml += getPokemonCardTemplate(pokemonDetails[i], typeName);
+    // galleryHtml += getPokemonCardTemplate(pokemonDetails[i], typeName); 
+    galleryHtml += getPokemonCardTempl(pokemonDetails[i], typeName, i);  //////
   }
 
   document.getElementById("pokemon_gallery").innerHTML = galleryHtml;
@@ -40,7 +41,7 @@ function getTypeIcons(pokemonDetail) {
 
   for (let i = 0; i < pokemonDetail.types.length; i++) {
     let typeName = pokemonDetail.types[i].type.name; // zB "grass"
-    galleryHtml += getTypeIconsTemplate(typeName);
+    galleryHtml += getTypeIconsTempl(typeName);
   }
 
   return galleryHtml;
@@ -50,19 +51,23 @@ function getTypeIcons(pokemonDetail) {
 
 
 function openLightbox(i) {
-  currentPhotoIndex = i; // ToDo umbenennen
-  renderLightbox();
+  // currentPhotoIndex = i; // ToDo umbenennen // brauche ich das?
+  const pokemonDetail = pokemonDetails[i]; // passendes Pokemon holen
+  renderLightbox(pokemonDetail); // an den Renderer übergeben
   lightboxRef.showModal(); // .showModal = Dialog/Lightbox wird geöffnet
 }
 
-function renderLightbox() {
-  const headerLightbox = document.getElementById("header_lightbox");
-  const imgLightbox = document.getElementById("img_lightbox");
-  const footerLightbox = document.getElementById("footer_lightbox");
+function renderLightbox(pokemonDetail) { //Übergabeparamter?
+  const pokemonLightbox = document.getElementById("pokemon_lightbox");
+  // const headerLightbox = document.getElementById("header_lightbox");
+  // const imgLightbox = document.getElementById("img_lightbox");
+  // const footerLightbox = document.getElementById("footer_lightbox");
 
-  headerLightbox.innerHTML = getHeaderLightboxTemplate();
-  imgLightbox.innerHTML = getImgLightboxTemplate();
-  footerLightbox.innerHTML = getFooterLightboxTemplate();
+  pokemonLightbox.innerHTML = getPokemonLightboxTempl(pokemonDetail);
+
+  // headerLightbox.innerHTML = getHeaderLightboxTemplate(pokemonDetail);
+  // imgLightbox.innerHTML = getImgLightboxTemplate(pokemonDetail);
+  // footerLightbox.innerHTML = getFooterLightboxTemplate();
 }
 
 function closeLightbox() {
