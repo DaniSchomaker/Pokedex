@@ -55,28 +55,52 @@ function getPokemonLightboxTempl(pokemonDetail, typeName) {
       <section id="tab_main" class="tab_main" style="display:block;">
         <table class="pokemon_main_table">
           <tr>
-            <td>Height:</td>
+            <td>height:</td>
             <td>${pokemonDetail.height / 10} m</td> 
           </tr>
           <tr>
-            <td>Weight:</td>
+            <td>weight:</td>
             <td>${pokemonDetail.weight / 10} kg</td> 
           </tr>
           <tr>
-            <td>Base experience:</td>
+            <td>base experience:</td>
             <td>${pokemonDetail.base_experience}</td> 
           </tr>
           <tr>
-            <td>Abilities:</td>
+            <td>abilities:</td>
             <td>${getAbilities(pokemonDetail)}</td>
           </tr>
 
-        </table>
-        
+        </table>        
       </section>
 
       <section id="tab_stats" class="tab_stats" style="display:none;">
-        <p>Stats-Inhalt …</p>
+        <table class="pokemon_main_table">
+          <tr>
+            <td>hp:</td>
+            <td> X </td>
+          </tr>
+          <tr>
+            <td>attack:</td>
+            <td> X </td>
+          </tr>
+          <tr>
+            <td>defense:</td>
+            <td> X </td>
+          </tr>   
+          <tr>
+            <td>special-attack:</td>
+            <td> X </td>
+          </tr> 
+          <tr>
+            <td>special-defense:</td>
+            <td> X </td>
+          </tr> 
+          <tr>
+            <td>speed:</td>
+            <td> X </td>
+          </tr>       
+        </table>
       </section>
 
 
