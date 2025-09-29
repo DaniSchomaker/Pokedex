@@ -69,14 +69,11 @@
 /***** Dialog/Lightbox *****/
 
 .lightbox {
-  width: 260px;
+  width: 280px;
   max-width: 95%;
-  margin: auto;
-  /* richtet die Lightbox mittig auf der Seite aus */
+  margin: auto; /* richtet die Lightbox mittig auf der Seite aus */
   border: none;
-  /* border: 3px solid white; */
   border-radius: 16px;
-
   color: white;
   background-color: var(--color_primary);
   padding: 0;
@@ -87,7 +84,7 @@
 }
 
 .pokemon_lightbox {
-  min-height: 500px;
+  min-height: 512px;
 }
 
 .pokemon_card {
@@ -95,7 +92,6 @@
   background-color: var(--color_primary);
   border-radius: 16px;
   overflow: hidden; /* vermeidet, dass die "eckigen Kanten" zB des headers angezeigt werden */
-  /* margin: 24px; */
 }
 
 .button_close {
@@ -147,8 +143,9 @@
 }
 
 .pokemon_main_table td {
-  width: 550px;
+  /* width: 200px; */
   vertical-align: top;
+  padding: 4px 4px;
 }
 
 
