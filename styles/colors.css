@@ -1,7 +1,10 @@
 :root {
   --color_bg: rgb(5, 23, 31); 
   --color_primary: rgb(8,33,41);
-  --color_highlight: rgba(88, 151, 173, 1);
+  --color_bg_main_stats: rgb(18,71,89);
+  --color_bg_metadata: rgb(13,50,64);
+  --color_highlight: rgb(88,151,173);
+  --color_red: rgb(247,93,82);
 }
 
 /* Alle Pokémon-Typen als Klassen (KI generiert) */
