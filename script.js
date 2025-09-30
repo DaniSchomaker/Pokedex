@@ -1,23 +1,24 @@
-// Mit Blick auf die spätere Suchfunktion lege ich nur EIN Array (nicht mehrere) an,
-// in dem jedes Element (Objekt) ein komplettes Pokémon ist:
+let pokemonDetails = []; // Array mit allen Pokemons (jeweils als Objekt)
+let currentPokemons = []; //
 
-let pokemonDetails = [];
 const lightboxRef = document.getElementById("lightbox");
 
 let currentOffset = 0;   // Start bei 0 --> So merke ich mir, wie weit ich schon gekommen bin
-let limit = 10;        // immer eine bestimmte Anzahl Pokémon laden
+let limit = 10;        // immer eine bestimmte Anzahl an Pokémons laden
 
-let currentPokemons = [];
+let isSearchActive = false; // für Suchfunktion
 
+////// functions //////
 
-function init() {
-  renderPokemonGallery(limit);
+async function init() {
+  await loadPokemons(limit);
+  renderAll();   
+  showBrowseMode();
 }
 
 
 
-
-async function renderPokemonGallery(limit) {
+async function loadPokemons(limit) {
   // LISTE der Pokémon holen:
   let listResponse = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${currentOffset}`);
   let pokemonList = await listResponse.json(); // in ein JSON umwandeln --> Den Variablenzusatz "AsJson" lasse ich weg, da das schon aus dem Code ersichtlich ist.
@@ -31,18 +32,58 @@ async function renderPokemonGallery(limit) {
 
     pokemonDetails.push(pokemonDetail); // Die Detaildaten werden im globalen Array (jeweils als Objekt) gespeichert.
   }
+}
 
-  // HTML für alle Karten
-  let galleryHtml = ""; // ??? Soll ich das ganz nach oben schreiben?
-  for (let i = 0; i < pokemonDetails.length; i++) {
-    let typeName = pokemonDetails[i].types[0].type.name;
-    // galleryHtml += getPokemonCardTemplate(pokemonDetails[i], typeName); 
-    galleryHtml += getPokemonCardTempl(pokemonDetails[i], typeName, i);  //////
+function renderAll() {
+  currentPokemons = pokemonDetails;
+  renderCurrentPokemons();
+}
 
+function renderCurrentPokemons() {
+  const galleryRef = document.getElementById("pokemon_gallery");
+  galleryRef.innerHTML = "";
 
+  for (let i = 0; i < currentPokemons.length; i++) {
+    const pokemon = currentPokemons[i];
+    const typeName = pokemon.types[0].type.name;
+
+    // globalen Index für die Lightbox ermitteln
+    const globalIndex = pokemonDetails.findIndex(detail => detail.id === pokemon.id); /////////////////// 
+    
+    galleryRef.innerHTML += getPokemonCardTempl(pokemon, typeName, globalIndex);
+  }
+}
+
+function startSearch() {
+  const searchInputRef = document.getElementById("search_input");
+  const searchInput = searchInputRef.value.trim().toLowerCase();
+
+  const errorMessageRef = document.getElementById("search_error");
+
+  // Fehlermeldung, wenn < 3 Buchstaben in das Suchfeld eingegeben werden
+  if (searchInput.length < 3) {
+    errorMessageRef.innerHTML = `<span class='error'>Please enter at least 3 letters.</span>`;
+    return;
   }
 
-  document.getElementById("pokemon_gallery").innerHTML = galleryHtml;
+  const results = pokemonDetails.filter(pokemon =>
+    pokemon.name.toLowerCase().startsWith(searchInput)
+  );
+
+  if (results.length === 0) {
+    const galleryRef = document.getElementById("pokemon_gallery"); // global definieren, da doppelt?
+    galleryRef.innerHTML = `<span class='error'>Uuuups, no Pokémon found.</span>`; 
+    showFilterMode(); // Der Button ändert sich von "show more" zu "clear search"
+    return; 
+  }
+
+  // gültige Suche mit Treffern -> Filter anzeigen
+  errorMessageRef.innerHTML = "";
+  isSearchActive  = true;
+
+  currentPokemons = results;
+  renderCurrentPokemons();
+  showFilterMode();
 }
 
 function getTypeIcons(pokemonDetail) {
@@ -67,37 +108,48 @@ function getAbilities(pokemonDetail) {
   return abilitiesHtml;
 }
 
-// Funktion für den Button (mit async und await, damit sich der Button während des Ladens deaktivieren kann)
 async function loadMore() {
   const buttonShowMore = document.getElementById("button_show_more");
-
-  // Button während des Ladens deaktivieren:
   buttonShowMore.disabled = true;
-  
-  currentOffset += limit; // Offset um 20 erhöhen
-  await renderPokemonGallery(limit);
 
-  // Button nach dem Laden wieder aktivieren:
+  currentOffset += limit;
+  await loadPokemons(limit);
+
   buttonShowMore.disabled = false;
 }
 
-// Suchfunktion
 
-function startSearch() {
-  let inputRef = document.getElementById("search_input");
-  let input = inputRef.value.toLowerCase();
-  console.log(input);
-  
-  let errorMessageRef = document.getElementById("search_error");
 
-  if (input.length < 3) {
-    errorMessageRef.classList.remove("d_none");
-    errorMessageRef.innerHTML = `<span>Search requires a minimum of 3 letters.</span>`;
-    return;
-  }
+
+
+
+
+function showFilterMode() {
+  // Suche aktiv -> Show more ausblenden, Reset zeigen
+  document.getElementById("button_show_more").classList.add("d_none");
+  document.getElementById("button_reset_filter").classList.remove("d_none");
+}
+
+function showBrowseMode() {
+  // Normale Ansicht -> Show more zeigen, Reset ausblenden
+  document.getElementById("button_show_more").classList.remove("d_none");
+  document.getElementById("button_reset_filter").classList.add("d_none");
 }
 
 
+function resetSearch() {
+  const searchInputRef = document.getElementById("search_input");
+  const errorMessageRef   = document.getElementById("search_error");
+
+  searchInputRef.value = "";
+  errorMessageRef.innerHTML = "";
+
+  isSearchActive = false;
+  // lastSearchInput = "";
+
+  renderAll();      // alle bisher geladenen
+  showBrowseMode(); // Show more wieder sichtbar
+}
 
 
 

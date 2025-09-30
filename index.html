@@ -27,7 +27,7 @@
               <input
                 id="search_input"
                 type="text"
-                placeholder="search by name oder #id..."
+                placeholder="search pokémon by name..."
               />
               <button class="button_main" onclick="startSearch()">Go!</button>
             </div>
@@ -43,6 +43,7 @@
         <div id="pokemon_gallery" class="pokemon_gallery"></div>
         <div class="show_more">
           <button id="button_show_more" onclick="loadMore()">show more</button>
+          <button id="button_reset_filter" class="d_none" onclick="resetSearch()">clear search</button>
         </div>
       </div>
 
