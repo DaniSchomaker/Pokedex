@@ -114,6 +114,7 @@ async function loadMore() {
 
   currentOffset += limit;
   await loadPokemons(limit);
+  renderAll();
 
   buttonShowMore.disabled = false;
 }
@@ -159,6 +160,8 @@ function openLightbox(i) {
   const pokemonDetail = pokemonDetails[i]; // passendes Pokemon holen
   renderLightbox(pokemonDetail); // an den Renderer übergeben
   lightboxRef.showModal(); // .showModal = Dialog/Lightbox wird geöffnet
+
+  document.body.classList.add("no_scroll"); // Hintergrund-Scrollen verhindern
 }
 
 function renderLightbox(pokemonDetail) { //Übergabeparamter?
@@ -169,6 +172,7 @@ function renderLightbox(pokemonDetail) { //Übergabeparamter?
 
 function closeLightbox() {
   lightboxRef.close();
+  document.body.classList.remove("no_scroll"); // Scrollen wieder erlauben
 }
 
 function closeLightboxBubblingProtection(event) {
