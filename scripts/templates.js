@@ -11,7 +11,7 @@ function getPokemonCardTempl(pokemonDetail, typeName, i) {
     <article class="pokemon_card" onclick="openLightbox(${i})">
       <header class="pokemon_card_header">
         <span>#${pokemonDetail.id}</span> 
-        <h2>${pokemonDetail.name}</h2>
+        <h2>${pokemonDetail.name.charAt(0).toUpperCase() + pokemonDetail.name.slice(1)}</h2>
       </header>
 
       <section class="pokemon_img ${typeName}"> 
@@ -30,7 +30,7 @@ function getPokemonLightboxTempl(pokemonDetail, typeName) {
     <article class="pokemon_lightbox">
       <header class="pokemon_card_header">
         <span>#${pokemonDetail.id}</span> 
-        <h2>${pokemonDetail.name}</h2>
+        <h2>${pokemonDetail.name.charAt(0).toUpperCase() + pokemonDetail.name.slice(1)}</h2>
         <button 
           onclick="closeLightbox()"
           class ="button_close" 
