@@ -29,6 +29,10 @@ h2 {
   font-weight: 400;
 }
 
+/* .d_none {
+  display: none;
+} */
+
 /***** Header *****/
 
 .website_header {
@@ -40,12 +44,21 @@ h2 {
   
 }
 
+.visible {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  width: 100%;
+  margin-top: 24px;
+}
+
 header .content_container { /* Der .content_container wird nur für den header zur Flexbox */
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100vw;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  width: 100%;
   padding: 24px;
 }
 
@@ -69,6 +82,48 @@ input {
   height: 24px;
 }
 
+
+/***** Search *****/
+/* .search {
+  
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+} */
+
+.search {
+  display: flex;
+  align-items: center;
+  height: 48px;
+}
+
+.search_error {
+  
+  text-align: end;
+  height: 20px;
+  font-size: 16px;
+  color: var(--color_red);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /***** Button main page *****/
 .show_more {
   display: flex;
@@ -76,21 +131,33 @@ input {
   margin: 16px 0px 24px 0px;
 }
 
-.show_more button {
+.show_more button,
+.search button {
   background-color: var(--color_red);
   color: white;
   font-size: 20px;
   border-radius: 8px;
+}
+
+.search button {
+  padding: 4px;
+}
+
+.show_more button {
   padding: 16px;
 }
 
-.show_more button:hover {
+.show_more button:hover,
+.search button:hover {
   transform: scale(1.03);
 }
 
 .show_more button:active {
   transform: scale(0.97);
 }
+
+
+
 
 /***** Footer *****/
 
