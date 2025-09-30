@@ -2,20 +2,26 @@
 // in dem jedes Element (Objekt) ein komplettes Pokémon ist:
 
 let pokemonDetails = [];
-let lightboxRef = document.getElementById("lightbox");
+const lightboxRef = document.getElementById("lightbox");
+
+let currentOffset = 0;   // Start bei 0 --> So merke ich mir, wie weit ich schon gekommen bin
+let limit = 20;        // immer eine bestimmte Anzahl Pokémon laden
+
+
 
 function init() {
-  renderPokemonGallery();
+  renderPokemonGallery(limit);
 }
 
-async function renderPokemonGallery() {
+
+
+
+async function renderPokemonGallery(limit) {
   // LISTE der Pokémon holen:
-  let listResponse = await fetch(
-    "https://pokeapi.co/api/v2/pokemon?limit=5&offset=0"
-  );
+  let listResponse = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${currentOffset}`);
   let pokemonList = await listResponse.json(); // in ein JSON umwandeln --> Den Variablenzusatz "AsJson" lasse ich weg, da das schon aus dem Code ersichtlich ist.
 
-  pokemonDetails = [];
+  // pokemonDetails = []; // ggf. wieder einkommentieren, falls ich nur immer 20 auf einer Seite anzeigen möchte
 
   // Für jedes Pokémon aus der LISTE:
   for (let i = 0; i < pokemonList.results.length; i++) {
@@ -58,7 +64,21 @@ function getAbilities(pokemonDetail) {
   return abilitiesHtml;
 }
 
+// Funktion für den Button (mit async und await, damit sich der Button während des Ladens deaktivieren kann)
+async function loadMore() {
+  const buttonShowMore = document.getElementById("button_show_more");
 
+  // Button während des Ladens deaktivieren:
+  buttonShowMore.disabled = true;
+  
+  currentOffset += limit; // Offset um 20 erhöhen
+  await renderPokemonGallery(limit);
+
+  // Button nach dem Laden wieder aktivieren:
+  buttonShowMore.disabled = false;
+}
+
+// Lightbox
 
 function openLightbox(i) {
   const pokemonDetail = pokemonDetails[i]; // passendes Pokemon holen
