@@ -5,8 +5,9 @@ let pokemonDetails = [];
 const lightboxRef = document.getElementById("lightbox");
 
 let currentOffset = 0;   // Start bei 0 --> So merke ich mir, wie weit ich schon gekommen bin
-let limit = 20;        // immer eine bestimmte Anzahl Pokémon laden
+let limit = 10;        // immer eine bestimmte Anzahl Pokémon laden
 
+let currentPokemons = [];
 
 
 function init() {
@@ -37,6 +38,8 @@ async function renderPokemonGallery(limit) {
     let typeName = pokemonDetails[i].types[0].type.name;
     // galleryHtml += getPokemonCardTemplate(pokemonDetails[i], typeName); 
     galleryHtml += getPokemonCardTempl(pokemonDetails[i], typeName, i);  //////
+
+
   }
 
   document.getElementById("pokemon_gallery").innerHTML = galleryHtml;
@@ -77,6 +80,26 @@ async function loadMore() {
   // Button nach dem Laden wieder aktivieren:
   buttonShowMore.disabled = false;
 }
+
+// Suchfunktion
+
+function startSearch() {
+  let inputRef = document.getElementById("search_input");
+  let input = inputRef.value.toLowerCase();
+  console.log(input);
+  
+  let errorMessageRef = document.getElementById("search_error");
+
+  if (input.length < 3) {
+    errorMessageRef.classList.remove("d_none");
+    errorMessageRef.innerHTML = `<span>Search requires a minimum of 3 letters.</span>`;
+    return;
+  }
+}
+
+
+
+
 
 // Lightbox
 

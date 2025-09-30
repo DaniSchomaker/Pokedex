@@ -17,12 +17,23 @@
   <body onload="init()">
     <header class="website_header">
       <div class="content_container">
-        <div class="header_logo">
-          <img src="./assets/icons/favicon.png" alt="Pokemon Logo" />
-          <span class="header_logo_title">Pokedex</span>
+        <div class="visible">
+          <div class="header_logo">
+            <img src="./assets/icons/favicon.png" alt="Pokemon Logo" />
+            <span class="header_logo_title">Pokedex</span>
+          </div>
+          <div class="search">
+            <div class="search_input">
+              <input
+                id="search_input"
+                type="text"
+                placeholder="search by name oder #id..."
+              />
+              <button class="button_main" onclick="startSearch()">Go!</button>
+            </div>
+          </div>
         </div>
-        <input type="text" />
-        <!-- Platzhalter für späteres Suchfeld -->
+        <p id="search_error" class="search_error"></p>
       </div>
     </header>
 
@@ -34,8 +45,6 @@
           <button id="button_show_more" onclick="loadMore()">show more</button>
         </div>
       </div>
-
-      
 
       <dialog
         id="lightbox"
