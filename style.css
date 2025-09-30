@@ -69,6 +69,29 @@ input {
   height: 24px;
 }
 
+/***** Button main page *****/
+.show_more {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0px 24px 0px;
+}
+
+.show_more button {
+  background-color: var(--color_red);
+  color: white;
+  font-size: 20px;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.show_more button:hover {
+  transform: scale(1.03);
+}
+
+.show_more button:active {
+  transform: scale(0.97);
+}
+
 /***** Footer *****/
 
 .website_footer {
