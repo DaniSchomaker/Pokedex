@@ -10,7 +10,8 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
+  overflow-y: scroll;
+ }
 
 main {
   flex: 1;
@@ -35,7 +36,6 @@ h2 {
 
 .no_scroll {
   overflow: hidden;
-  height: 100vh; /* verhindert auch Tastatur-Scrollen */
 }
 
 .label {
@@ -156,6 +156,16 @@ input {
   background-color: var(--color_primary);
   color: white;
   border-top: 1px solid var(--color_highlight);
+}
+
+.website_footer p {
+  display: inline-flex; /* damit das Herz auf gleicher Höhe wie der Text ist */
+  gap: 4px;            
+}
+
+.heart_icon {
+  height: 20px;
+  object-fit: contain;
 }
 
 /***** Queries *****/
