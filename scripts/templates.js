@@ -6,20 +6,20 @@ function getTypeIconsTempl(typeName) {
   `;
 }
 
-function getPokemonCardTempl(pokemonDetail, typeName, i) {
+function getPokemonCardTempl(pokemon, typeName, globalIndex) {
   return `
-    <article class="pokemon_card" onclick="openLightbox(${i})">
+    <article class="pokemon_card" onclick="openLightbox(${globalIndex})">
       <header class="pokemon_card_header">
-        <span>#${pokemonDetail.id}</span> 
-        <h2>${pokemonDetail.name.charAt(0).toUpperCase() + pokemonDetail.name.slice(1)}</h2>
+        <span>#${pokemon.id}</span> 
+        <h2>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h2>
       </header>
 
       <section class="pokemon_img ${typeName}"> 
-        <img src="${pokemonDetail.sprites.other.home.front_default}" alt="${pokemonDetail.name}">
+        <img src="${pokemon.sprites.other.home.front_default}" alt="${pokemon.name}">
       </section>
 
       <footer class="pokemon_type">
-        ${getTypeIcons(pokemonDetail)}
+        ${getTypeIcons(pokemon)}
       </footer>
     </article>  
   `;
@@ -35,12 +35,18 @@ function getPokemonLightboxTempl(pokemonDetail, typeName) {
           onclick="closeLightbox()"
           class ="button_close" 
           aria-label="Pokemon-Datailansicht schließen">
-            X  
+            <img src="./assets/icons/close.png" alt="close button">
         </button>
       </header>
 
-      <section class="pokemon_img ${typeName}"> 
-        <img src="${pokemonDetail.sprites.other.home.front_default}" alt="${pokemonDetail.name}">
+      <section class="pokemon_card_img ${typeName} "> 
+        <button class="button_arrow" onclick="showPreviousPokemon()" aria-label="previous pokémon">
+          <img src="./assets/icons/arrow_left.png" alt="show previous pokémon">
+        </button>
+          <img src="${pokemonDetail.sprites.other.home.front_default}" alt="${pokemonDetail.name}">
+        <button class="button_arrow" onclick="showNextPokemon()" aria-label="next pokémon">
+          <img src="./assets/icons/arrow_right.png" alt="show next pokémon">
+        </button>
       </section>
 
       <section class="pokemon_type">

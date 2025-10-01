@@ -1,10 +1,11 @@
 let pokemonDetails = []; // Array mit allen Pokemons (jeweils als Objekt)
-let currentPokemons = []; //
+let currentPokemons = []; // für die Filter-Funktion
+let currentPokemonIndex = 0; // merkt sich, welches Pokémon in der Lightbox angezeigt wird
 
 const lightboxRef = document.getElementById("lightbox");
 
 let currentOffset = 0;   // Start bei 0 --> So merke ich mir, wie weit ich schon gekommen bin
-let limit = 10;        // immer eine bestimmte Anzahl an Pokémons laden
+let limit = 40;        // immer eine bestimmte Anzahl an Pokémons laden
 
 let isSearchActive = false; // für Suchfunktion
 
@@ -48,9 +49,9 @@ function renderCurrentPokemons() {
     const typeName = pokemon.types[0].type.name;
 
     // globalen Index für die Lightbox ermitteln
-    const globalIndex = pokemonDetails.findIndex(detail => detail.id === pokemon.id); /////////////////// 
+    // const globalIndex = pokemonDetails.findIndex(detail => detail.id === pokemon.id); /////////////////// 
     
-    galleryRef.innerHTML += getPokemonCardTempl(pokemon, typeName, globalIndex);
+    galleryRef.innerHTML += getPokemonCardTempl(pokemon, typeName, i);
   }
 }
 
@@ -157,16 +158,17 @@ function resetSearch() {
 // Lightbox
 
 function openLightbox(i) {
-  const pokemonDetail = pokemonDetails[i]; // passendes Pokemon holen
-  renderLightbox(pokemonDetail); // an den Renderer übergeben
+  currentPokemonIndex = i;
+  // const pokemonDetail = pokemonDetails[i]; // passendes Pokemon holen
+  renderLightbox(); // an den Renderer übergeben
   lightboxRef.showModal(); // .showModal = Dialog/Lightbox wird geöffnet
 
   document.body.classList.add("no_scroll"); // Hintergrund-Scrollen verhindern
 }
 
-function renderLightbox(pokemonDetail) { //Übergabeparamter?
+function renderLightbox() { //Übergabeparamter?
   const pokemonLightbox = document.getElementById("pokemon_lightbox");
-
+  const pokemonDetail = currentPokemons[currentPokemonIndex]; 
   pokemonLightbox.innerHTML = getPokemonLightboxTempl(pokemonDetail);
 }
 
@@ -205,7 +207,34 @@ function showStats() {
 
 
 
+///// Lightbox-Buttons: previous/next photo /////
 
+function showPreviousPokemon() { 
+  if (currentPokemonIndex > 0) {
+    currentPokemonIndex--;
+  } else {
+    currentPokemonIndex = currentPokemons.length - 1; // zum letzten Bild springen
+  }
+  renderLightbox();
+}
+
+function showNextPokemon() {
+  if (currentPokemonIndex < currentPokemons.length - 1) {
+    currentPokemonIndex++;
+  } else {
+    currentPokemonIndex = 0; // vom letzten zurück zum ersten
+  }
+  renderLightbox();
+}
+
+// function showNextPokemon() {
+//   if (currentPhotoIndex < PHOTOS.length - 1) {
+//     currentPhotoIndex++;
+//   } else {
+//     currentPhotoIndex = 0; // zum ersten Bild springen
+//   }
+//   renderLightbox();
+// }
 
 
 
