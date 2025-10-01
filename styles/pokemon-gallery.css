@@ -5,11 +5,12 @@
 }
 
 .pokemon_card {
-  width: 200px;
+  width: 210px;
   background-color: var(--color_primary);
+  border: 2px solid transparent;
   border-radius: 16px;
   overflow: hidden; /* vermeidet, dass die "eckigen Kanten" zB des headers angezeigt werden */
-  margin: 24px;
+  margin: 24px; 
 }
 
 .pokemon_card_header {
@@ -25,15 +26,26 @@
 .pokemon_img {
   display: flex;
   justify-content: center;
-  background-color: var(--color_highlight); /* !!! ToDo !!! */
-  padding-bottom: 20px;
+  padding: 12px 0px 20px 0px;
+  /* padding-bottom: 20px; */
   transition: box-shadow 0.3s ease;
 }
 
 .pokemon_img img {
   height: 120px;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease;
+}
+
+.pokemon_card_img {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 16px 20px 16px;
+}
+
+.pokemon_card_img img {
+  height: 160px;
+  object-fit: contain;
 }
 
 .pokemon_type {
@@ -43,11 +55,16 @@
   padding: 16px;
 }
 
-.pokemon_card:hover .pokemon_img {
-  box-shadow: 0 0 16px currentColor;
+.pokemon_card:hover,
+.pokemon_img:hover {
+  box-shadow: 0 0 16px var(--color_highlight);
 }
 
-.pokemon_card:hover .pokemon_img img {
+.pokemon_card:hover {
+  border: 2px solid var(--color_highlight);
+}
+
+.pokemon_img img:hover {
   transform: scale(1.1);
 }
 
@@ -83,9 +100,9 @@
   background: rgba(0, 0, 0, 0.6);
 }
 
-.pokemon_lightbox {
-  min-height: 512px;
-}
+/* .pokemon_lightbox {
+  min-height: 5px;
+} */
 
 .pokemon_card {
   width: 200px;
@@ -94,19 +111,39 @@
   overflow: hidden; /* vermeidet, dass die "eckigen Kanten" zB des headers angezeigt werden */
 }
 
+.pokemon_card:hover {
+  cursor: pointer;
+}
+
 .button_close {
-  color: white;
-  border: 1px solid white;
+  /* color: white; */
+  border: 1px solid transparent;
   border-radius: 4px;
-  padding: 2px 6px;
+  padding: 4px 4px 0px 4px;
 }
 
-.button_close:hover {
-  transform: scale(1.1);
+.button_close img {
+  height: 20px;
+  object-fit: contain;
 }
 
-.button_close:active {
-  transform: scale(0.9);
+.button_arrow img {
+  height: 36px;
+  object-fit: contain;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.button_close:hover,
+.button_arrow img:hover {
+  border: 1px solid var(--color_red);
+  transform: scale(1.05);
+}
+
+.button_close:active,
+.button_arrow img:active {
+  transform: scale(0.95);
 }
 
 /* Tabs & Details */
@@ -116,6 +153,11 @@
   justify-content: space-evenly;
   gap: 1px;
   margin: 0;
+}
+
+.tab_main,
+.tab_stats {
+  height: 260px;
 }
 
 .tab_button {
