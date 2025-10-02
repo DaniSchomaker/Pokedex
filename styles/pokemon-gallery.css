@@ -5,7 +5,6 @@
 }
 
 .pokemon_card {
-  width: 210px;
   background-color: var(--color_primary);
   border: 2px solid transparent;
   border-radius: 16px;
@@ -58,6 +57,7 @@
 .pokemon_card:hover,
 .pokemon_img:hover {
   box-shadow: 0 0 16px var(--color_highlight);
+  text-decoration: none;
 }
 
 .pokemon_card:hover {
@@ -86,7 +86,7 @@
 /***** Dialog/Lightbox *****/
 
 .lightbox {
-  width: 280px;
+  width: 300px;
   max-width: 95%;
   margin: auto; /* richtet die Lightbox mittig auf der Seite aus */
   border: none;
@@ -100,10 +100,6 @@
   background: rgba(0, 0, 0, 0.6);
 }
 
-/* .pokemon_lightbox {
-  min-height: 5px;
-} */
-
 .pokemon_card {
   width: 200px;
   background-color: var(--color_primary);
@@ -116,7 +112,6 @@
 }
 
 .button_close {
-  /* color: white; */
   border: 1px solid transparent;
   border-radius: 4px;
   padding: 4px 4px 0px 4px;
@@ -182,12 +177,31 @@
 
 .pokemon_main_table {
   padding: 16px;
+  width: 100%;
+  /* border-collapse: collapse; */
 }
 
 .pokemon_main_table td {
   /* width: 200px; */
-  vertical-align: top;
-  padding: 4px 4px;
+  vertical-align: middle;
+  padding: 4px 6px;
 }
 
 
+
+
+
+
+.progress {
+  width: 80px;          
+  height: 10px;          
+  background: var(--color_bg_main_stats);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress_fill {
+  height: 100%;
+  width: 0; /* wird per JS gesetzt */
+  background: var(--color_red);
+}
