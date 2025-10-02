@@ -20,11 +20,13 @@
         <div class="visible">
           <div class="header_logo">
             <img src="./assets/icons/favicon.png" alt="Pokemon Logo" />
-            <span class="header_logo_title">Pokedex</span>
+            <span class="header_logo_title">Pokédex</span>
           </div>
           <div class="search">
             <div class="search_input">
-              <p><label for="search_input" class="label">Pokémon search:</label></p>
+              <p>
+                <label for="search_input" class="label">Pokémon search:</label>
+              </p>
               <input
                 id="search_input"
                 type="text"
@@ -40,11 +42,29 @@
 
     <main>
       <div class="content_container">
-        <h1 tabindex="-1">Pokemons</h1>
+        <h1 tabindex="-1">Pokémons</h1>
+
         <div id="pokemon_gallery" class="pokemon_gallery"></div>
+
+          <div id="loading_spinner" class="loading_spinner">
+            <img src="./assets/gifs/loading.gif" alt="loading spinner" />
+            <p>...loading</p>
+          </div>
+
         <div class="show_more">
           <button id="button_show_more" onclick="loadMore()">show more</button>
-          <button id="button_reset_filter" class="d_none" onclick="resetSearch()">clear search</button>
+          <button
+            id="button_reset_filter"
+            class="d_none"
+            onclick="resetSearch()"
+          >
+            clear search
+          </button>
+
+
+
+
+
         </div>
       </div>
 
@@ -64,8 +84,13 @@
       <div class="content_container">
         <p>
           © 2025 Dani Schomaker | Credits:
-          <a href="https://pokeapi.co/" target="_blank">PokéAPI</a> 
-          <img class="heart_icon" src="./assets/icons/heart.svg" alt="heart-icon">
+          <a href="https://pokeapi.co/" target="_blank">PokéAPI</a>
+          <span class="heart">♥</span>
+          <img
+            class="heart_icon"
+            src="./assets/icons/heart.svg"
+            alt="heart-icon"
+          />
         </p>
       </div>
     </footer>
