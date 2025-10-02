@@ -17,7 +17,8 @@ a:hover {
 button {
   /* all: unset;  --> geht nicht, da dann auch der FOKUS (Tab) rausgenommen wird */
   background: none;
+  color: white;
   border: none;
-  padding: 0;
   cursor: pointer; 
+  padding: 0;
 }

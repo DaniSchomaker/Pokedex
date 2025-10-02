@@ -1,14 +1,4 @@
-let pokemonDetails = []; // Array mit allen Pokemons (jeweils als Objekt)
-let currentPokemons = []; // für die Filter-Funktion
-let currentPokemonIndex = 0; // merkt sich, welches Pokémon in der Lightbox angezeigt wird
-
-const lightboxRef = document.getElementById("lightbox");
-
-let currentOffset = 0; // Start bei 0 --> So merke ich mir, wie weit ich schon gekommen bin
-let limit = 40; // immer eine bestimmte Anzahl an Pokémons laden
-
-let isSearchActive = false; // für Suchfunktion
-
+////////////////// variables //////////////////
 
 const maxHP = 255;
 const maxAttack = 190;
@@ -17,15 +7,27 @@ const maxSpecialAttack = 194;
 const maxSpecialDefense = 250;
 const maxSpeed = 200;
 
-////// functions //////
+const galleryRef = document.getElementById("pokemon_gallery");
+const lightboxRef = document.getElementById("lightbox");
+
+const limit = 40; // immer eine bestimmte Anzahl an Pokémons laden
+let currentOffset = 0; // Zum Leden der Pokemons --> So merke ich mir, wie weit ich beim Laden schon gekommen bin
+
+let loadedPokemons = []; // Array mit allen geladenen Pokemons (einzelne Pokémons als Objekt)
+let visiblePokemons = []; // für die Filter-Funktion --> diese werden in der Gallery angezeigt
+let activePokemonIndex = 0; // merkt sich, welches Pokémon in der Lightbox angezeigt wird
+
+////////////////// functions //////////////////
 
 async function init() {
   showLoadingSpinner();
   await loadPokemons(limit);
-  renderAll();
-  showBrowseMode();
+  renderLoadedPokemons();
+  showShowMoreButton();
   hideLoadingSpinner();
 }
+
+////// pokémon gallery //////
 
 async function loadPokemons(limit) {
   // LISTE der Pokémon holen:
@@ -34,44 +36,38 @@ async function loadPokemons(limit) {
   );
   let pokemonList = await listResponse.json(); // in ein JSON umwandeln --> Den Variablenzusatz "AsJson" lasse ich weg, da das schon aus dem Code ersichtlich ist.
 
-  // pokemonDetails = []; // ggf. wieder einkommentieren, falls ich nur immer 20 auf einer Seite anzeigen möchte
-
-  // Für jedes Pokémon aus der LISTE:
+  // Für jedes Pokémon aus der Liste die DETAILS holen:
   for (let i = 0; i < pokemonList.results.length; i++) {
-    let detailResponse = await fetch(pokemonList.results[i].url); // Über die URL die Details dieses Pokemons abrufen.
-    let pokemonDetail = await detailResponse.json(); // in ein JSON umwandeln (s.o.)
+    let detailResponse = await fetch(pokemonList.results[i].url); // Über die URL die Details dieses Pokémons abrufen.
+    let fetchedPokemon = await detailResponse.json(); // in ein JSON umwandeln (s.o.)
 
-    pokemonDetails.push(pokemonDetail); // Die Detaildaten werden im globalen Array (jeweils als Objekt) gespeichert.
+    loadedPokemons.push(fetchedPokemon); // Die Detaildaten werden im globalen Array (jeweils als Objekt) gespeichert.
   }
 }
 
-function renderAll() {
-  currentPokemons = pokemonDetails;
-  renderCurrentPokemons();
+function renderLoadedPokemons() {
+  visiblePokemons = loadedPokemons;
+  renderVisiblePokemons();
 }
 
-function renderCurrentPokemons() {
-  const galleryRef = document.getElementById("pokemon_gallery");
+function renderVisiblePokemons() {
   galleryRef.innerHTML = "";
 
-  for (let i = 0; i < currentPokemons.length; i++) {
-    const pokemon = currentPokemons[i];
+  for (let i = 0; i < visiblePokemons.length; i++) {
+    const pokemon = visiblePokemons[i];
     const typeName = pokemon.types[0].type.name;
-
-    // globalen Index für die Lightbox ermitteln
-    // const globalIndex = pokemonDetails.findIndex(detail => detail.id === pokemon.id); ///////////////////
-
     galleryRef.innerHTML += getPokemonCardTempl(pokemon, typeName, i);
   }
 }
 
-function startSearch() {
-  showLoadingSpinner();
+////// pokémon search //////
 
+function applySearch() {
   const searchInputRef = document.getElementById("search_input");
   const searchInput = searchInputRef.value.trim().toLowerCase();
-
   const errorMessageRef = document.getElementById("search_error");
+
+  showLoadingSpinner();
 
   // Fehlermeldung, wenn < 3 Buchstaben in das Suchfeld eingegeben werden
   if (searchInput.length < 3) {
@@ -80,82 +76,38 @@ function startSearch() {
     return;
   }
 
-  const results = pokemonDetails.filter((pokemon) =>
-    pokemon.name.toLowerCase().startsWith(searchInput)
+  const results = loadedPokemons.filter((pokemon) =>
+    pokemon.name.toLowerCase().startsWith(searchInput) // pokémons sind in der API klein geschrieben
   );
 
   if (results.length === 0) {
-    const galleryRef = document.getElementById("pokemon_gallery"); // global definieren, da doppelt?
-    galleryRef.innerHTML = `<span class='error'>Uuuups, no Pokémon found.</span>`;
-    showFilterMode(); // Der Button ändert sich von "show more" zu "clear search"
+    galleryRef.innerHTML = `<span class='no_search_result'>Uuuups, no Pokémon found.</span>`;
+    showResetSearchButton(); // Der Button ändert sich von "show more" zu "reset search"
     hideLoadingSpinner();
     return;
   }
 
-  // gültige Suche mit Treffern -> Filter anzeigen
+  // gültige Suche mit Treffern --> Filter anzeigen
   errorMessageRef.innerHTML = "";
-  isSearchActive = true;
-
-  currentPokemons = results;
-  renderCurrentPokemons();
-  showFilterMode();
+  visiblePokemons = results;
+  renderVisiblePokemons();
+  showResetSearchButton();
   hideLoadingSpinner();
 }
 
-function getTypeIcons(pokemonDetail) {
-  let galleryHtml = "";
-
-  for (let i = 0; i < pokemonDetail.types.length; i++) {
-    let typeName = pokemonDetail.types[i].type.name; // zB "grass"
-    galleryHtml += getTypeIconsTempl(typeName);
-  }
-
-  return galleryHtml;
-}
-
-function getAbilities(pokemonDetail) {
-  let abilitiesHtml = "";
-  for (let i = 0; i < pokemonDetail.abilities.length; i++) {
-    if (i > 0) {
-      abilitiesHtml += `, <br>`;
-    }
-    abilitiesHtml += pokemonDetail.abilities[i].ability.name;
-  }
-  return abilitiesHtml;
-}
-
-async function loadMore() {
-  showLoadingSpinner();
-
-// await new Promise(requestAnimationFrame); //////////////////////////
-
-  const buttonShowMore = document.getElementById("button_show_more");
-  buttonShowMore.disabled = true;
-
-  currentOffset += limit;
-  await loadPokemons(limit);
-  renderAll();
-
-  buttonShowMore.disabled = false;
-  hideLoadingSpinner();
-}
-
-function showFilterMode() {
-  // Suche aktiv -> Show more ausblenden, Reset zeigen
+function showResetSearchButton() {
   document.getElementById("button_show_more").classList.add("d_none");
-  document.getElementById("button_reset_filter").classList.remove("d_none");
+  document.getElementById("button_reset_search").classList.remove("d_none");
 }
 
-function showBrowseMode() {
-  // Normale Ansicht -> Show more zeigen, Reset ausblenden
-  document.getElementById("button_show_more").classList.remove("d_none"); // mit style?
-  document.getElementById("button_reset_filter").classList.add("d_none");
+function showShowMoreButton() {
+  document.getElementById("button_show_more").classList.remove("d_none");
+  document.getElementById("button_reset_search").classList.add("d_none");
 }
 
 async function resetSearch() {
   showLoadingSpinner();
-  // await new Promise(requestAnimationFrame); /////////////////////////////////
-  await new Promise(r => setTimeout(r, 120)); ///////////////////////////////
+  await new Promise(requestAnimationFrame); // damit der Loading-Spinner Zeit hat, angezeigt zu werden 
 
   const searchInputRef = document.getElementById("search_input");
   const errorMessageRef = document.getElementById("search_error");
@@ -163,29 +115,40 @@ async function resetSearch() {
   searchInputRef.value = "";
   errorMessageRef.innerHTML = "";
 
-  isSearchActive = false;
-
-  renderAll(); // alle bisher geladenen
-  showBrowseMode(); // Show more wieder sichtbar
+  renderLoadedPokemons(); // alle bisher geladenen
+  showShowMoreButton(); // Show more-Button ist wieder sichtbar
   hideLoadingSpinner();
 }
 
-// Lightbox
+////// Lightbox (Pokémon Cards) //////
 
 function openLightbox(i) {
-  currentPokemonIndex = i;
-  // const pokemonDetail = pokemonDetails[i]; // passendes Pokemon holen
-  renderLightbox(); // an den Renderer übergeben
+  activePokemonIndex = i;
+  renderLightbox();
   lightboxRef.showModal(); // .showModal = Dialog/Lightbox wird geöffnet
 
   document.body.classList.add("no_scroll"); // Hintergrund-Scrollen verhindern
 }
 
 function renderLightbox() {
-  //Übergabeparamter?
-  const pokemonLightbox = document.getElementById("pokemon_lightbox");
-  const pokemonDetail = currentPokemons[currentPokemonIndex];
-  pokemonLightbox.innerHTML = getPokemonLightboxTempl(pokemonDetail);
+  const pokemonLightboxRef = document.getElementById("pokemon_lightbox");
+  const activePokemon = visiblePokemons[activePokemonIndex];
+  const typeName = activePokemon.types[0].type.name;
+  pokemonLightboxRef.innerHTML = getPokemonLightboxTempl(
+    activePokemon,
+    typeName
+  );
+}
+
+function getTypeIcons(pokemonDetail) {
+  let galleryHtml = "";
+
+  for (let i = 0; i < pokemonDetail.types.length; i++) {
+    let typeName = pokemonDetail.types[i].type.name;
+    galleryHtml += getTypeIconsTempl(typeName);
+  }
+
+  return galleryHtml;
 }
 
 function closeLightbox() {
@@ -197,7 +160,7 @@ function closeLightboxBubblingProtection(event) {
   event.stopPropagation(); // bei den Event "click" wird der Bubbling-Effekt (also das Durchgreifen auf die unteren Ebenen) vermieden
 }
 
-function showMain() {
+function showMainTab() {
   // Tabs
   document.getElementById("button_main").classList.add("active");
   document.getElementById("button_stats").classList.remove("active");
@@ -207,111 +170,140 @@ function showMain() {
   document.getElementById("tab_stats").style.display = "none";
 }
 
-
-function showStats() {
-  // Tabs umschalten
-  document.getElementById("button_main").classList.remove("active");
-  document.getElementById("button_stats").classList.add("active");
-  document.getElementById("tab_main").style.display = "none"; 
-  document.getElementById("tab_stats").style.display = "block";
-
-  // Aktuelles Pokémon bestimmen
-  const currentPokemon = currentPokemons[currentPokemonIndex]; // vielleicht als globale Variable???
-
-  // Werte setzen
-  document.getElementById("stat_hp").innerText = getBaseStat(currentPokemon, "hp");
-  document.getElementById("stat_attack").innerText = getBaseStat(currentPokemon, "attack");
-  document.getElementById("stat_defense").innerText = getBaseStat(currentPokemon, "defense");
-  document.getElementById("stat_special_attack").innerText = getBaseStat(currentPokemon, "special-attack");
-  document.getElementById("stat_special_defense").innerText = getBaseStat(currentPokemon, "special-defense");
-  document.getElementById("stat_speed").innerText = getBaseStat(currentPokemon, "speed");
-
-  // Balken setzen
-  setBarWidth("bar_hp",              getBaseStat(currentPokemon, "hp"),              255);
-  setBarWidth("bar_attack",          getBaseStat(currentPokemon, "attack"),          190);
-  setBarWidth("bar_defense",         getBaseStat(currentPokemon, "defense"),         250);
-  setBarWidth("bar_special_attack",  getBaseStat(currentPokemon, "special-attack"),  194);
-  setBarWidth("bar_special_defense", getBaseStat(currentPokemon, "special-defense"), 250);
-  setBarWidth("bar_speed",           getBaseStat(currentPokemon, "speed"),           200);
+function getAbilities(activePokemon) {
+  let abilitiesHtml = "";
+  for (let i = 0; i < activePokemon.abilities.length; i++) {
+    if (i > 0) {
+      abilitiesHtml += `, <br>`;
+    }
+    abilitiesHtml += activePokemon.abilities[i].ability.name;
+  }
+  return abilitiesHtml;
 }
 
+function switchToStatsTab() {
+  document.getElementById("button_main").classList.remove("active");
+  document.getElementById("button_stats").classList.add("active");
+  document.getElementById("tab_main").style.display = "none";
+  document.getElementById("tab_stats").style.display = "block";
+}
 
-
-
-
-
-
-
+function fillStatsValues(activePokemon) {
+  document.getElementById("stat_hp").innerHTML = getBaseStat(activePokemon, "hp");
+  document.getElementById("stat_attack").innerHTML = getBaseStat(
+    activePokemon,
+    "attack"
+  );
+  document.getElementById("stat_defense").innerHTML = getBaseStat(
+    activePokemon,
+    "defense"
+  );
+  document.getElementById("stat_special_attack").innerHTML = getBaseStat(
+    activePokemon,
+    "special-attack"
+  );
+  document.getElementById("stat_special_defense").innerHTML = getBaseStat(
+    activePokemon,
+    "special-defense"
+  );
+  document.getElementById("stat_speed").innerHTML = getBaseStat(
+    activePokemon,
+    "speed"
+  );
+}
 
 function getBaseStat(pokemonDetail, statName) {
-  // Wenn keine Daten da sind, gib einfach "-" zurück
-  // if (!pokemonDetail || !pokemonDetail.stats) {
-  //   return "-";
-  // }
-
-  // Alle Stat-Einträge durchgehen
   for (let i = 0; i < pokemonDetail.stats.length; i++) {
-    const statEntry = pokemonDetail.stats[i]; 
+    const statEntry = pokemonDetail.stats[i];
 
-    // Prüfen, ob der Name mit dem gesuchten übereinstimmt
+    // Prüfen, ob der Name mit dem gesuchten übereinstimmt:
     if (statEntry.stat.name === statName) {
-      return statEntry.base_stat; // z. B. 45
+      return statEntry.base_stat;
     }
   }
+}
 
-  // Falls nichts gefunden → Standardwert ///// RAUS?
-  return "-";
+function fillStatsBars(activePokemon) {
+  setBarWidth("bar_hp", getBaseStat(activePokemon, "hp"), maxHP);
+  setBarWidth("bar_attack", getBaseStat(activePokemon, "attack"), maxAttack);
+  setBarWidth("bar_defense", getBaseStat(activePokemon, "defense"), maxDefense);
+  setBarWidth(
+    "bar_special_attack",
+    getBaseStat(activePokemon, "special-attack"),
+    maxSpecialAttack
+  );
+  setBarWidth(
+    "bar_special_defense",
+    getBaseStat(activePokemon, "special-defense"),
+    maxSpecialDefense
+  );
+  setBarWidth("bar_speed", getBaseStat(activePokemon, "speed"), maxSpeed);
 }
 
 function setBarWidth(barElementId, statValue, maxValue) {
   const barElement = document.getElementById(barElementId);
-
-  // Prozentualen Anteil berechnen
-  const percentage = Math.round((statValue / maxValue) * 100);
-
-  // Breite des inneren Balkens setzen
-  barElement.style.width = percentage + "%";
+  const percentage = Math.round((statValue / maxValue) * 100); // Prozentualen Anteil zum MAX berechnen
+  barElement.style.width = percentage + "%"; // Breite des inneren Balkens setzen
 }
 
+function showStatsTab() {
+  switchToStatsTab();
+  const activePokemon = visiblePokemons[activePokemonIndex];
+  fillStatsValues(activePokemon);
+  fillStatsBars(activePokemon);
+}
 
-
-
-
-
-
-///// Lightbox-Buttons: previous/next photo /////
+///// Lightbox-Buttons: previous/next pokémon /////
 
 function showPreviousPokemon() {
-  if (currentPokemonIndex > 0) {
-    currentPokemonIndex--;
+  if (activePokemonIndex > 0) {
+    activePokemonIndex--;
   } else {
-    currentPokemonIndex = currentPokemons.length - 1; // zum letzten Bild springen
+    activePokemonIndex = visiblePokemons.length - 1; // zum letzten Pokémon springen
   }
   renderLightbox();
 }
 
 function showNextPokemon() {
-  if (currentPokemonIndex < currentPokemons.length - 1) {
-    currentPokemonIndex++;
+  if (activePokemonIndex < visiblePokemons.length - 1) {
+    activePokemonIndex++;
   } else {
-    currentPokemonIndex = 0; // vom letzten zurück zum ersten
+    activePokemonIndex = 0; // vom letzten zurück zum ersten Pokémon
   }
   renderLightbox();
 }
 
-///// Loading-Spinner /////
+////// load more Pokémons //////
+
+async function loadMore() {
+  showLoadingSpinner();
+
+  const buttonShowMore = document.getElementById("button_show_more");
+  buttonShowMore.disabled = true;
+
+  currentOffset += limit;
+  await loadPokemons(limit);
+  renderLoadedPokemons();
+
+  buttonShowMore.disabled = false;
+  hideLoadingSpinner();
+}
+
+///// Loading-Spinner (as Overlay) /////
 
 function showLoadingSpinner() {
   document.getElementById("loading_spinner").style.display = "flex";
+  document.body.classList.add("no_scroll");
 }
 
 function hideLoadingSpinner() {
   document.getElementById("loading_spinner").style.display = "none";
+  document.body.classList.remove("no_scroll");
 }
 
 ///// Fokusshift /////
 
-// function setFocusOnTop() {
-//   const elementRef = document.getElementById("headline");
-//   elementRef.focus();
-// }
+function setFocusOnTop() {
+  const elementRef = document.getElementById("headline");
+  elementRef.focus();
+}

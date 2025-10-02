@@ -32,7 +32,7 @@
                 type="text"
                 placeholder="enter name..."
               />
-              <button class="button_main" onclick="startSearch()">Go!</button>
+              <button class="button_main" onclick="applySearch()">Go!</button>
             </div>
           </div>
         </div>
@@ -42,38 +42,29 @@
 
     <main>
       <div class="content_container">
-        <h1 tabindex="-1">Pokémons</h1>
-
+        <h1 id="headline" tabindex="-1">Pokémons</h1>
         <div id="pokemon_gallery" class="pokemon_gallery"></div>
 
-          <div id="loading_spinner" class="loading_spinner">
-            <img src="./assets/gifs/loading.gif" alt="loading spinner" />
-            <p>...loading</p>
-          </div>
+        <div id="loading_spinner" class="loading_spinner">
+          <img src="./assets/gifs/loading.gif" alt="loading spinner" />
+          <p>...loading</p>
+        </div>
 
         <div class="show_more">
-          <button id="button_show_more" onclick="loadMore()">show more</button>
+          <button id="button_show_more" class="d_none" onclick="loadMore()">
+            show more
+          </button>
           <button
-            id="button_reset_filter"
+            id="button_reset_search"
             class="d_none"
             onclick="resetSearch()"
           >
-            clear search
+            reset search
           </button>
-
-
-
-
-
         </div>
       </div>
 
-      <dialog
-        id="lightbox"
-        class="lightbox"
-        onclick="closeLightbox()"
-        aria-labelledby="lightbox_title"
-      >
+      <dialog id="lightbox" class="lightbox" onclick="closeLightbox()">
         <div onclick="closeLightboxBubblingProtection(event)">
           <section id="pokemon_lightbox" class="pokemon_lightbox"></section>
         </div>
@@ -86,11 +77,6 @@
           © 2025 Dani Schomaker | Credits:
           <a href="https://pokeapi.co/" target="_blank">PokéAPI</a>
           <span class="heart">♥</span>
-          <img
-            class="heart_icon"
-            src="./assets/icons/heart.svg"
-            alt="heart-icon"
-          />
         </p>
       </div>
     </footer>
