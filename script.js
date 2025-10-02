@@ -4,24 +4,34 @@ let currentPokemonIndex = 0; // merkt sich, welches Pokémon in der Lightbox ang
 
 const lightboxRef = document.getElementById("lightbox");
 
-let currentOffset = 0;   // Start bei 0 --> So merke ich mir, wie weit ich schon gekommen bin
-let limit = 40;        // immer eine bestimmte Anzahl an Pokémons laden
+let currentOffset = 0; // Start bei 0 --> So merke ich mir, wie weit ich schon gekommen bin
+let limit = 40; // immer eine bestimmte Anzahl an Pokémons laden
 
 let isSearchActive = false; // für Suchfunktion
+
+
+const maxHP = 255;
+const maxAttack = 190;
+const maxDefense = 250;
+const maxSpecialAttack = 194;
+const maxSpecialDefense = 250;
+const maxSpeed = 200;
 
 ////// functions //////
 
 async function init() {
+  showLoadingSpinner();
   await loadPokemons(limit);
-  renderAll();   
+  renderAll();
   showBrowseMode();
+  hideLoadingSpinner();
 }
-
-
 
 async function loadPokemons(limit) {
   // LISTE der Pokémon holen:
-  let listResponse = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${currentOffset}`);
+  let listResponse = await fetch(
+    `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${currentOffset}`
+  );
   let pokemonList = await listResponse.json(); // in ein JSON umwandeln --> Den Variablenzusatz "AsJson" lasse ich weg, da das schon aus dem Code ersichtlich ist.
 
   // pokemonDetails = []; // ggf. wieder einkommentieren, falls ich nur immer 20 auf einer Seite anzeigen möchte
@@ -49,13 +59,15 @@ function renderCurrentPokemons() {
     const typeName = pokemon.types[0].type.name;
 
     // globalen Index für die Lightbox ermitteln
-    // const globalIndex = pokemonDetails.findIndex(detail => detail.id === pokemon.id); /////////////////// 
-    
+    // const globalIndex = pokemonDetails.findIndex(detail => detail.id === pokemon.id); ///////////////////
+
     galleryRef.innerHTML += getPokemonCardTempl(pokemon, typeName, i);
   }
 }
 
 function startSearch() {
+  showLoadingSpinner();
+
   const searchInputRef = document.getElementById("search_input");
   const searchInput = searchInputRef.value.trim().toLowerCase();
 
@@ -64,27 +76,30 @@ function startSearch() {
   // Fehlermeldung, wenn < 3 Buchstaben in das Suchfeld eingegeben werden
   if (searchInput.length < 3) {
     errorMessageRef.innerHTML = `<span class='error'>Please enter at least 3 letters.</span>`;
+    hideLoadingSpinner();
     return;
   }
 
-  const results = pokemonDetails.filter(pokemon =>
+  const results = pokemonDetails.filter((pokemon) =>
     pokemon.name.toLowerCase().startsWith(searchInput)
   );
 
   if (results.length === 0) {
     const galleryRef = document.getElementById("pokemon_gallery"); // global definieren, da doppelt?
-    galleryRef.innerHTML = `<span class='error'>Uuuups, no Pokémon found.</span>`; 
+    galleryRef.innerHTML = `<span class='error'>Uuuups, no Pokémon found.</span>`;
     showFilterMode(); // Der Button ändert sich von "show more" zu "clear search"
-    return; 
+    hideLoadingSpinner();
+    return;
   }
 
   // gültige Suche mit Treffern -> Filter anzeigen
   errorMessageRef.innerHTML = "";
-  isSearchActive  = true;
+  isSearchActive = true;
 
   currentPokemons = results;
   renderCurrentPokemons();
   showFilterMode();
+  hideLoadingSpinner();
 }
 
 function getTypeIcons(pokemonDetail) {
@@ -110,6 +125,10 @@ function getAbilities(pokemonDetail) {
 }
 
 async function loadMore() {
+  showLoadingSpinner();
+
+// await new Promise(requestAnimationFrame); //////////////////////////
+
   const buttonShowMore = document.getElementById("button_show_more");
   buttonShowMore.disabled = true;
 
@@ -118,13 +137,8 @@ async function loadMore() {
   renderAll();
 
   buttonShowMore.disabled = false;
+  hideLoadingSpinner();
 }
-
-
-
-
-
-
 
 function showFilterMode() {
   // Suche aktiv -> Show more ausblenden, Reset zeigen
@@ -134,26 +148,27 @@ function showFilterMode() {
 
 function showBrowseMode() {
   // Normale Ansicht -> Show more zeigen, Reset ausblenden
-  document.getElementById("button_show_more").classList.remove("d_none");
+  document.getElementById("button_show_more").classList.remove("d_none"); // mit style?
   document.getElementById("button_reset_filter").classList.add("d_none");
 }
 
+async function resetSearch() {
+  showLoadingSpinner();
+  // await new Promise(requestAnimationFrame); /////////////////////////////////
+  await new Promise(r => setTimeout(r, 120)); ///////////////////////////////
 
-function resetSearch() {
   const searchInputRef = document.getElementById("search_input");
-  const errorMessageRef   = document.getElementById("search_error");
+  const errorMessageRef = document.getElementById("search_error");
 
   searchInputRef.value = "";
   errorMessageRef.innerHTML = "";
 
   isSearchActive = false;
-  // lastSearchInput = "";
 
-  renderAll();      // alle bisher geladenen
+  renderAll(); // alle bisher geladenen
   showBrowseMode(); // Show more wieder sichtbar
+  hideLoadingSpinner();
 }
-
-
 
 // Lightbox
 
@@ -166,9 +181,10 @@ function openLightbox(i) {
   document.body.classList.add("no_scroll"); // Hintergrund-Scrollen verhindern
 }
 
-function renderLightbox() { //Übergabeparamter?
+function renderLightbox() {
+  //Übergabeparamter?
   const pokemonLightbox = document.getElementById("pokemon_lightbox");
-  const pokemonDetail = currentPokemons[currentPokemonIndex]; 
+  const pokemonDetail = currentPokemons[currentPokemonIndex];
   pokemonLightbox.innerHTML = getPokemonLightboxTempl(pokemonDetail);
 }
 
@@ -181,9 +197,6 @@ function closeLightboxBubblingProtection(event) {
   event.stopPropagation(); // bei den Event "click" wird der Bubbling-Effekt (also das Durchgreifen auf die unteren Ebenen) vermieden
 }
 
-
-
-
 function showMain() {
   // Tabs
   document.getElementById("button_main").classList.add("active");
@@ -194,22 +207,81 @@ function showMain() {
   document.getElementById("tab_stats").style.display = "none";
 }
 
+
 function showStats() {
-  // Tabs
+  // Tabs umschalten
   document.getElementById("button_main").classList.remove("active");
   document.getElementById("button_stats").classList.add("active");
-
-  // Inhalte
-  document.getElementById("tab_main").style.display = "none";
+  document.getElementById("tab_main").style.display = "none"; 
   document.getElementById("tab_stats").style.display = "block";
+
+  // Aktuelles Pokémon bestimmen
+  const currentPokemon = currentPokemons[currentPokemonIndex]; // vielleicht als globale Variable???
+
+  // Werte setzen
+  document.getElementById("stat_hp").innerText = getBaseStat(currentPokemon, "hp");
+  document.getElementById("stat_attack").innerText = getBaseStat(currentPokemon, "attack");
+  document.getElementById("stat_defense").innerText = getBaseStat(currentPokemon, "defense");
+  document.getElementById("stat_special_attack").innerText = getBaseStat(currentPokemon, "special-attack");
+  document.getElementById("stat_special_defense").innerText = getBaseStat(currentPokemon, "special-defense");
+  document.getElementById("stat_speed").innerText = getBaseStat(currentPokemon, "speed");
+
+  // Balken setzen
+  setBarWidth("bar_hp",              getBaseStat(currentPokemon, "hp"),              255);
+  setBarWidth("bar_attack",          getBaseStat(currentPokemon, "attack"),          190);
+  setBarWidth("bar_defense",         getBaseStat(currentPokemon, "defense"),         250);
+  setBarWidth("bar_special_attack",  getBaseStat(currentPokemon, "special-attack"),  194);
+  setBarWidth("bar_special_defense", getBaseStat(currentPokemon, "special-defense"), 250);
+  setBarWidth("bar_speed",           getBaseStat(currentPokemon, "speed"),           200);
 }
+
+
+
+
+
+
+
+
+
+function getBaseStat(pokemonDetail, statName) {
+  // Wenn keine Daten da sind, gib einfach "-" zurück
+  // if (!pokemonDetail || !pokemonDetail.stats) {
+  //   return "-";
+  // }
+
+  // Alle Stat-Einträge durchgehen
+  for (let i = 0; i < pokemonDetail.stats.length; i++) {
+    const statEntry = pokemonDetail.stats[i]; 
+
+    // Prüfen, ob der Name mit dem gesuchten übereinstimmt
+    if (statEntry.stat.name === statName) {
+      return statEntry.base_stat; // z. B. 45
+    }
+  }
+
+  // Falls nichts gefunden → Standardwert ///// RAUS?
+  return "-";
+}
+
+function setBarWidth(barElementId, statValue, maxValue) {
+  const barElement = document.getElementById(barElementId);
+
+  // Prozentualen Anteil berechnen
+  const percentage = Math.round((statValue / maxValue) * 100);
+
+  // Breite des inneren Balkens setzen
+  barElement.style.width = percentage + "%";
+}
+
+
+
 
 
 
 
 ///// Lightbox-Buttons: previous/next photo /////
 
-function showPreviousPokemon() { 
+function showPreviousPokemon() {
   if (currentPokemonIndex > 0) {
     currentPokemonIndex--;
   } else {
@@ -227,18 +299,15 @@ function showNextPokemon() {
   renderLightbox();
 }
 
-// function showNextPokemon() {
-//   if (currentPhotoIndex < PHOTOS.length - 1) {
-//     currentPhotoIndex++;
-//   } else {
-//     currentPhotoIndex = 0; // zum ersten Bild springen
-//   }
-//   renderLightbox();
-// }
+///// Loading-Spinner /////
 
+function showLoadingSpinner() {
+  document.getElementById("loading_spinner").style.display = "flex";
+}
 
-
-
+function hideLoadingSpinner() {
+  document.getElementById("loading_spinner").style.display = "none";
+}
 
 ///// Fokusshift /////
 

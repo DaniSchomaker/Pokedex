@@ -8,7 +8,11 @@ function getTypeIconsTempl(typeName) {
 
 function getPokemonCardTempl(pokemon, typeName, globalIndex) {
   return `
-    <article class="pokemon_card" onclick="openLightbox(${globalIndex})">
+    <button type="button"
+        class="pokemon_card"
+        onclick="openLightbox(${globalIndex})"
+        aria-label="Details zu ${pokemon.name} öffnen">
+   
       <header class="pokemon_card_header">
         <span>#${pokemon.id}</span> 
         <h2>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h2>
@@ -21,7 +25,7 @@ function getPokemonCardTempl(pokemon, typeName, globalIndex) {
       <footer class="pokemon_type">
         ${getTypeIcons(pokemon)}
       </footer>
-    </article>  
+    </button>  
   `;
 }
 
@@ -80,34 +84,64 @@ function getPokemonLightboxTempl(pokemonDetail, typeName) {
         </table>        
       </section>
 
-      <section id="tab_stats" class="tab_stats" style="display:none;">
-        <table class="pokemon_main_table">
-          <tr>
-            <td>hp:</td>
-            <td> X </td>
-          </tr>
-          <tr>
-            <td>attack:</td>
-            <td> X </td>
-          </tr>
-          <tr>
-            <td>defense:</td>
-            <td> X </td>
-          </tr>   
-          <tr>
-            <td>special-attack:</td>
-            <td> X </td>
-          </tr> 
-          <tr>
-            <td>special-defense:</td>
-            <td> X </td>
-          </tr> 
-          <tr>
-            <td>speed:</td>
-            <td> X </td>
-          </tr>       
-        </table>
-      </section>
+<section id="tab_stats" class="tab_stats" style="display:none;">
+  <table class="pokemon_main_table">
+    <tr>
+      <td>hp:</td>
+      <td id="stat_hp">X</td>
+      <td>
+        <div class="progress">
+          <div id="bar_hp" class="progress_fill"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>attack:</td>
+      <td id="stat_attack">X</td>
+      <td>
+        <div class="progress">
+          <div id="bar_attack" class="progress_fill"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>defense:</td>
+      <td id="stat_defense">X</td>
+      <td>
+        <div class="progress">
+          <div id="bar_defense" class="progress_fill"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>special-attack:</td>
+      <td id="stat_special_attack">X</td>
+      <td>
+        <div class="progress">
+          <div id="bar_special_attack" class="progress_fill"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>special-defense:</td>
+      <td id="stat_special_defense">X</td>
+      <td>
+        <div class="progress">
+          <div id="bar_special_defense" class="progress_fill"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>speed:</td>
+      <td id="stat_speed">X</td>
+      <td>
+        <div class="progress">
+          <div id="bar_speed" class="progress_fill"></div>
+        </div>
+      </td>
+    </tr>
+  </table>        
+</section>
 
 
 
